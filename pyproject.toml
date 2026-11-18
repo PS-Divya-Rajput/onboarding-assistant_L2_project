@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onboarding-assistant"
+version = "0.1.0"
+description = "Onboarding assistant powered by custom MCP server and agentic AI"
+authors = [{ name = "Senior AI Engineer" }]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=2.3.0",
+    "google-genai>=2.11.0",
+    "groq>=1.7.0",
+    "httpx>=0.28.1",
+    "pydantic>=2.14.0",
+    "pydantic-settings>=2.14.0",
+    "python-dotenv>=1.2.0",
+    "pathspec>=1.1.0",
+    "chromadb>=1.5.0",
+    "sentence-transformers>=6.2.0",
+    "streamlit>=1.59.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0.0",
+    "pytest-asyncio>=1.4.0",
+    "respx>=0.23.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+python_files = ["test_*.py"]

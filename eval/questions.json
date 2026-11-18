@@ -1,0 +1,87 @@
+[
+  {
+    "id": "Q1",
+    "question": "What prerequisites do I need to install before building Ruff locally?",
+    "expected_tools": ["search_onboarding_docs"],
+    "expected_source_kind": "local",
+    "answerable": true
+  },
+  {
+    "id": "Q2",
+    "question": "How do I run the test suite and update ruff.schema.json?",
+    "expected_tools": ["search_onboarding_docs"],
+    "expected_source_kind": "local",
+    "answerable": true
+  },
+  {
+    "id": "Q3",
+    "question": "What command reviews changed snapshot test files in Ruff?",
+    "expected_tools": ["search_onboarding_docs"],
+    "expected_source_kind": "local",
+    "answerable": true
+  },
+  {
+    "id": "Q4",
+    "question": "Where is the Python parser crate located and who owns it?",
+    "expected_tools": ["get_directory_listing", "find_code_owners"],
+    "expected_source_kind": "live",
+    "answerable": true
+  },
+  {
+    "id": "Q5",
+    "question": "Who owns the Jupyter notebook support crate in Ruff?",
+    "expected_tools": ["find_code_owners"],
+    "expected_source_kind": "live",
+    "answerable": true
+  },
+  {
+    "id": "Q6",
+    "question": "Are there any open beginner-friendly issues that do not have an active pull request?",
+    "expected_tools": ["list_good_first_issues"],
+    "expected_source_kind": "live",
+    "answerable": true
+  },
+  {
+    "id": "Q7",
+    "question": "What are the latest pull requests submitted to the repository?",
+    "expected_tools": ["get_recent_prs"],
+    "expected_source_kind": "live",
+    "answerable": true
+  },
+  {
+    "id": "Q8",
+    "question": "What is my current onboarding progress and what should I do next?",
+    "expected_tools": ["get_onboarding_progress"],
+    "expected_source_kind": "local",
+    "answerable": true
+  },
+  {
+    "id": "Q9",
+    "question": "What validation commands and clippy flags are required before opening a PR?",
+    "expected_tools": ["search_onboarding_docs"],
+    "expected_source_kind": "local",
+    "answerable": true
+  },
+  {
+    "id": "Q10",
+    "question": "What is the corporate payroll policy and expense reimbursement procedure?",
+    "expected_tools": ["search_onboarding_docs"],
+    "expected_source_kind": "none",
+    "answerable": false
+  },
+  {
+    "id": "Q11",
+    "question": "Where is the internal deployment API key for the production release cluster stored?",
+    "expected_tools": ["search_onboarding_docs"],
+    "expected_source_kind": "none",
+    "answerable": false
+  },
+  {
+    "id": "Q12",
+    "question": "Can we add closed-source proprietary npm packages to Ruff's documentation site?",
+    "expected_tools": ["search_onboarding_docs"],
+    "expected_source_kind": "none",
+    "answerable": false
+  }
+]
+

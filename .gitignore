@@ -1,0 +1,32 @@
+# Virtual environment
+venv/
+.venv/
+ENV/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environment and secrets
+.env
+
+# Runtime data & vector store
+data/*.db
+data/*.db-shm
+data/*.db-wal
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+data/chroma_store/
+eval/results/
+
+# Logs
+*.log
+
+# Streamlit runtime
+.streamlit/secrets.toml
+

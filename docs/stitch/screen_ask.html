@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background text-on-surface" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding assistant · astral-sh/ruff</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-dim": "#d4dbe0",
+            "on-surface-variant": "#414844",
+            "error": "#ba1a1a",
+            "surface-tint": "#3f6653",
+            "on-secondary-container": "#663500",
+            "on-primary": "#ffffff",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#ebf2f7",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#2a3136",
+            "on-tertiary-fixed": "#002114",
+            "background": "#f4faff",
+            "surface-container-low": "#eef4fa",
+            "outline-variant": "#c1c8c2",
+            "surface-container-high": "#e2e9ef",
+            "tertiary-container": "#00452e",
+            "on-surface": "#161d21",
+            "secondary": "#904d00",
+            "surface-container": "#e8eff4",
+            "on-secondary-fixed": "#2f1500",
+            "on-secondary-fixed-variant": "#6e3900",
+            "secondary-fixed": "#ffdcc3",
+            "on-primary-container": "#86af99",
+            "on-background": "#161d21",
+            "surface": "#f4faff",
+            "error-container": "#ffdad6",
+            "primary-fixed-dim": "#a5d0b9",
+            "primary-container": "#1b4332",
+            "surface-container-highest": "#dce3e9",
+            "on-primary-fixed-variant": "#274e3d",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#95d4b3",
+            "surface-variant": "#dce3e9",
+            "on-tertiary-container": "#75b393",
+            "on-primary-fixed": "#002114",
+            "on-tertiary-fixed-variant": "#0e5138",
+            "tertiary-fixed": "#b1f0ce",
+            "secondary-container": "#fe932c",
+            "primary-fixed": "#c1ecd4",
+            "outline": "#717973",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#012d1d",
+            "secondary-fixed-dim": "#ffb77d",
+            "surface-bright": "#f4faff",
+            "on-error-container": "#93000a",
+            "inverse-primary": "#a5d0b9",
+            "tertiary": "#002d1c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin-mobile": "1.25rem",
+            "margin": "2.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "gutter-mobile": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Newsreader", "serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "label-md": ["JetBrains Mono", "monospace"],
+            "label-sm": ["JetBrains Mono", "monospace"],
+            "headline-md": ["Newsreader", "serif"],
+            "display-lg-mobile": ["Newsreader", "serif"],
+            "headline-lg-mobile": ["Newsreader", "serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "display-lg": ["Newsreader", "serif"],
+            "code-inline": ["JetBrains Mono", "monospace"],
+            "body-sm": ["Inter", "sans-serif"],
+            "headline-sm": ["Inter", "sans-serif"],
+            "code-block": ["JetBrains Mono", "monospace"]
+          },
+          "fontSize": {
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "display-lg": ["44px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "code-block": ["13px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #c1c8c2;
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #717973;
+    }
+  </style>
+</head>
+<body class="h-full bg-[#FAF9F5] text-on-surface antialiased overflow-hidden flex flex-col font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ========================================== -->
+<!-- TOP APP BAR (Shared Component: TopNavBar)  -->
+<!-- ========================================== -->
+<header class="w-full h-14 px-6 flex items-center justify-between border-b border-outline-variant bg-surface-container-lowest z-30 flex-shrink-0 select-none shadow-[0_1px_3px_0_rgba(17,24,28,0.04)]">
+<!-- Left: Wordmark & Repo Pill & Gemini Status -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight font-medium font-serif">Onboarding assistant</span>
+</div>
+<div class="h-4 w-px bg-outline-variant hidden sm:block"></div>
+<!-- Repo Chip (trailing_secondary_action in JSON) -->
+<div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant rounded text-on-surface-variant font-label-sm text-label-sm hover:border-outline transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface">source_notes</span>
+<span class="font-medium text-on-surface">astral-sh/ruff</span>
+<span class="text-outline">/</span>
+<span class="text-on-surface-variant">main</span>
+</div>
+<!-- Gemini Live Status (trailing_primary_action in JSON) -->
+<div class="flex items-center gap-2 px-2.5 py-1 bg-[#D8F3DC]/40 border border-[#B7E4C7] rounded">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-[#1B4332]"></span>
+</span>
+<span class="font-label-sm text-label-sm text-primary-container font-semibold tracking-wide">Gemini · Ready</span>
+</div>
+</div>
+<!-- Center: Navigation Links -->
+<nav class="hidden md:flex items-center gap-8 h-full">
+<!-- Active Link: 'Ask' -->
+<a class="border-b-2 border-primary text-primary font-medium py-3 h-full flex items-center transition-colors duration-150 ease-in-out font-body-md text-body-md" href="#ask">
+        Ask
+      </a>
+<!-- Inactive Link: 'Onboarding Path' -->
+<a class="text-on-surface-variant hover:text-on-surface py-3 h-full flex items-center gap-1.5 transition-colors duration-150 ease-in-out font-body-md text-body-md" href="#path">
+<span>Onboarding Path</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-label-sm bg-surface-container font-medium text-on-surface-variant">4/12</span>
+</a>
+<!-- Inactive Link: 'Question Log' -->
+<a class="text-on-surface-variant hover:text-on-surface py-3 h-full flex items-center gap-1.5 transition-colors duration-150 ease-in-out font-body-md text-body-md" href="#log">
+<span>Question Log</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-label-sm bg-surface-container font-medium text-on-surface-variant">18</span>
+</a>
+</nav>
+<!-- Right: Search, Trailing Icons, Git Sync & Avatar -->
+<div class="flex items-center gap-3">
+<!-- Search Input Trigger -->
+<button class="hidden lg:flex items-center justify-between gap-3 px-3 py-1.5 bg-surface-container-low border border-outline-variant hover:border-outline rounded text-on-surface-variant text-label-sm font-label-sm transition-colors">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline">search</span>
+<span class="text-outline">Search codebase docs...</span>
+</div>
+<kbd class="px-1.5 py-0.5 bg-surface-container-lowest border border-outline-variant rounded text-[10px] text-outline font-label-sm shadow-sm">⌘K</kbd>
+</button>
+<!-- Git sync telemetry note -->
+<div class="hidden xl:flex items-center gap-1.5 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-[15px]">sync</span>
+<span>Synced 4m ago</span>
+</div>
+<div class="h-4 w-px bg-outline-variant hidden sm:block"></div>
+<!-- Trailing icon actions from JSON: ["terminal", "notifications", "settings"] -->
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150" title="Terminal AST Shell">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150 relative" title="Notifications">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150" title="Settings">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<!-- Profile Avatar -->
+<div class="flex items-center pl-1 border-l border-outline-variant">
+<button class="w-8 h-8 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center hover:opacity-90 transition-opacity ring-1 ring-outline-variant/30" title="Ravi Sharma developer profile avatar">
+          RS
+        </button>
+</div>
+</div>
+</header>
+<!-- ========================================== -->
+<!-- MAIN WORKSPACE VIEW (Sidebar + Canvas)    -->
+<!-- ========================================== -->
+<div class="flex-1 flex overflow-hidden">
+<!-- ======================================== -->
+<!-- LEFT SIDEBAR (Shared Component: SideNavBar) -->
+<!-- ======================================== -->
+<aside class="w-80 flex-shrink-0 bg-surface-container-lowest border-r border-outline-variant flex flex-col justify-between overflow-y-auto custom-scroll z-20 select-none">
+<!-- Top Section of Sidebar: Persona, Progress & Navigation -->
+<div class="p-4 space-y-4">
+<!-- Persona & Switcher Header -->
+<div class="p-3 bg-surface-container-low border border-outline-variant rounded-lg space-y-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded bg-[#1B4332] text-white flex items-center justify-center font-label-md text-label-md font-semibold tracking-wider">
+                RS
+              </div>
+<div class="overflow-hidden">
+<div class="font-headline-sm text-headline-sm font-semibold truncate leading-tight text-on-surface">Ravi Sharma</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant truncate">Junior Contributor · Step 4 of 12</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/50 text-[11px] font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="text-outline">Role:</span>
+<span class="font-semibold text-primary-container">Junior Rust Contributor</span>
+</div>
+<span class="text-outline">Day 3</span>
+</div>
+<!-- Persona select switch -->
+<div class="relative">
+<button class="w-full flex items-center justify-between px-2.5 py-1.5 bg-surface-container-lowest border border-outline-variant rounded text-left font-body-sm text-body-sm hover:border-outline transition-colors text-on-surface">
+<span class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-[15px] text-outline">badge</span>
+<span>Switch: Core Triager view</span>
+</span>
+<span class="material-symbols-outlined text-[16px] text-outline">unfold_more</span>
+</button>
+</div>
+</div>
+<!-- Onboarding Progress Bar Segmented Card -->
+<div class="p-3.5 bg-surface-container-low/60 border border-outline-variant rounded-lg space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface uppercase tracking-wider">Onboarding Progress</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary">33% (4/12)</span>
+</div>
+<!-- 12 Segmented bars (4 filled in forest green, 8 empty) -->
+<div class="grid grid-cols-12 gap-1 h-2">
+<div class="bg-primary-container rounded-sm" title="Step 1: Workspace Clone"></div>
+<div class="bg-primary-container rounded-sm" title="Step 2: Rust Toolchain Config"></div>
+<div class="bg-primary-container rounded-sm" title="Step 3: Initial Build"></div>
+<div class="bg-primary-container rounded-sm" title="Step 4: Run Ruff Test Harness"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 5: Explore crate directory structure"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 6"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 7"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 8"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 9"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 10"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 11"></div>
+<div class="bg-[#E4E4E7] rounded-sm" title="Step 12"></div>
+</div>
+<!-- Next Milestone highlight -->
+<div class="mt-3 p-3 bg-surface-container-lowest border border-outline-variant rounded space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-label-sm uppercase tracking-wider px-1.5 py-0.5 bg-[#D8F3DC] text-primary-container font-semibold rounded">
+                Upcoming Milestone
+              </span>
+<span class="text-[11px] font-label-sm text-outline">~25m</span>
+</div>
+<div class="font-body-sm text-body-sm font-semibold text-on-surface leading-snug">
+              Step 05: Explore crate directory structure &amp; AST modules
+            </div>
+<!-- CTA Button from JSON: "Ask about next step" -->
+<button class="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[#1B4332] hover:bg-[#2D6A4F] text-white rounded text-label-sm font-label-sm font-medium transition-colors">
+<span>Ask about next step</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Primary Navigation Tabs from SideNavBar JSON -->
+<div class="space-y-0.5 pt-1">
+<div class="px-2 py-1 font-label-sm text-label-sm text-outline uppercase tracking-wider">Workspace Views</div>
+<!-- Active navigation item according to JSON instruction -->
+<a class="bg-surface-container-low text-primary font-medium border-l-2 border-primary pl-3 py-2 flex items-center gap-3 rounded-r text-body-sm font-body-sm transition-colors duration-150" href="#overview">
+<span class="material-symbols-outlined text-[19px]">dashboard</span>
+<span>Overview</span>
+</a>
+<!-- Inactive tabs -->
+<a class="text-on-surface-variant hover:text-on-surface pl-3 py-2 flex items-center gap-3 hover:bg-surface-container-low rounded-r text-body-sm font-body-sm transition-colors duration-150" href="#milestones">
+<span class="material-symbols-outlined text-[19px]">route</span>
+<span>Milestones &amp; Path</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface pl-3 py-2 flex items-center gap-3 hover:bg-surface-container-low rounded-r text-body-sm font-body-sm transition-colors duration-150" href="#ast">
+<span class="material-symbols-outlined text-[19px]">account_tree</span>
+<span>Repository AST</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface pl-3 py-2 flex items-center gap-3 hover:bg-surface-container-low rounded-r text-body-sm font-body-sm transition-colors duration-150" href="#telemetry">
+<span class="material-symbols-outlined text-[19px]">query_stats</span>
+<span>Telemetry &amp; Traces</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface pl-3 py-2 flex items-center gap-3 hover:bg-surface-container-low rounded-r text-body-sm font-body-sm transition-colors duration-150" href="#governance">
+<span class="material-symbols-outlined text-[19px]">verified_user</span>
+<span>Governance &amp; Audit</span>
+</a>
+</div>
+</div>
+<!-- Footer Section: Governance & Provenance from JSON -->
+<div class="p-4 border-t border-outline-variant space-y-3 bg-[#FAF9F5]/80">
+<div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-lg space-y-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[18px]">menu_book</span>
+<div class="font-label-sm text-label-sm font-semibold text-on-surface">Documentation Ingested</div>
+</div>
+<p class="text-[12px] font-body-sm text-on-surface-variant leading-relaxed">
+            13 repository documents with 277 sections synced from <code class="font-code-inline text-code-inline text-[11px] bg-surface-container px-1 py-0.5 rounded">CONTRIBUTING.md</code> and Ruff internal handbooks.
+          </p>
+<div class="flex items-center gap-1.5 pt-1 text-[11px] font-label-sm text-primary-container">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+<span>Zero leakage: Grounded AST only</span>
+</div>
+</div>
+<!-- Footer Nav links from JSON: ["Documentation Ingested", "Security & Provenance"] -->
+<div class="flex items-center justify-between text-[11px] font-label-sm text-outline px-1">
+<span class="hover:text-on-surface cursor-pointer flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">policy</span>
+<span>Security &amp; Provenance</span>
+</span>
+<span>v0.4.8-ruff</span>
+</div>
+</div>
+</aside>
+<!-- ======================================== -->
+<!-- CENTER CANVAS: Ask / Discussion Stream  -->
+<!-- ======================================== -->
+<main class="flex-1 flex flex-col h-full bg-[#FAF9F5] overflow-hidden relative">
+<!-- Scrollable Message & Prompt Area -->
+<div class="flex-1 overflow-y-auto px-6 py-8 custom-scroll space-y-6 max-w-4xl mx-auto w-full">
+<!-- Welcome Hero Banner -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 shadow-[0_1px_3px_0_rgba(17,24,28,0.04)]">
+<div class="flex items-start justify-between gap-4">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-[#D8F3DC] text-primary-container text-label-sm font-label-sm font-semibold rounded">
+                  Grounded Onboarding Agent
+                </span>
+<span class="text-outline text-label-sm font-label-sm">astral-sh/ruff · commit 8fc42b</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-serif text-on-surface tracking-tight">
+                Astral Ruff Onboarding Copilot: Verified &amp; Grounded Guidance
+              </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl leading-relaxed">
+                Ask questions about codebase architecture, linter rules, compiler diagnostics, and crate boundaries with zero hallucination. Every response is cited from official repository documentation and live repo metadata.
+              </p>
+</div>
+<div class="hidden sm:flex p-3 bg-surface-container-low border border-outline-variant rounded-lg text-center flex-col items-center justify-center min-w-[110px]">
+<span class="text-headline-md font-headline-md font-serif text-primary-container">1.84+</span>
+<span class="text-[11px] font-label-sm text-outline uppercase tracking-wider">Rust MSRV</span>
+</div>
+</div>
+</section>
+<!-- 2x2 Starter Prompt Cards Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<!-- Card 1 -->
+<button class="p-4 text-left bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant hover:border-outline rounded-lg transition-all duration-150 group shadow-[0_1px_2px_0_rgba(17,24,28,0.03)]">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">Local Environment Setup</span>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-0.5 transition-transform text-[18px]">terminal</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">Cargo workspace, rustup targets, and pre-commit hooks for Ruff development.</p>
+</button>
+<!-- Card 2 -->
+<button class="p-4 text-left bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant hover:border-outline rounded-lg transition-all duration-150 group shadow-[0_1px_2px_0_rgba(17,24,28,0.03)]">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">Architecture &amp; Ownership</span>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-0.5 transition-transform text-[18px]">account_tree</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">Linter vs Formatter crate split and AST visitor pipelines across crates.</p>
+</button>
+<!-- Card 3 -->
+<button class="p-4 text-left bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant hover:border-outline rounded-lg transition-all duration-150 group shadow-[0_1px_2px_0_rgba(17,24,28,0.03)]">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">Unassigned Beginner Issues</span>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-0.5 transition-transform text-[18px]">checklist</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">Filter good-first-issue labels with core team mentors attached for review.</p>
+</button>
+<!-- Card 4 -->
+<button class="p-4 text-left bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant hover:border-outline rounded-lg transition-all duration-150 group shadow-[0_1px_2px_0_rgba(17,24,28,0.03)]">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">Weekly Goals &amp; First PR</span>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-0.5 transition-transform text-[18px]">flag</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">Review onboarding checklist and target first PR to <code class="font-code-inline text-[11px] bg-surface-container px-1 py-0.5 rounded">ruff_linter</code>.</p>
+</button>
+</section>
+<!-- Divider with Timestamp -->
+<div class="relative flex items-center justify-center my-6">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant"></div></div>
+<span class="relative bg-[#FAF9F5] px-3 font-label-sm text-label-sm text-outline uppercase tracking-wider">Conversation Log · Today</span>
+</div>
+<!-- ==================================== -->
+<!-- CONVERSATION STREAM                  -->
+<!-- ==================================== -->
+<div class="space-y-6 pb-28">
+<!-- 1. User Message Card -->
+<div class="flex items-start gap-3.5 pl-6 sm:pl-16">
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-[0_1px_2px_0_rgba(17,24,28,0.04)]">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Ravi Sharma</span>
+<span class="text-outline text-label-sm font-label-sm">Junior Contributor</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline">Today, 10:42 AM</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                How do I set the project up locally and build Ruff?
+              </p>
+</div>
+<div class="w-9 h-9 rounded bg-[#1B4332] text-white flex-shrink-0 flex items-center justify-center font-label-md text-label-md font-semibold ring-1 ring-outline-variant">
+              RS
+            </div>
+</div>
+<!-- 2. Collapsible Reasoning & Execution Trace Inspector -->
+<div class="border border-outline-variant rounded-lg bg-surface-container-lowest overflow-hidden shadow-[0_1px_2px_0_rgba(17,24,28,0.03)]">
+<details class="group" open="">
+<summary class="flex items-center justify-between px-4 py-2.5 bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors select-none">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary-container text-[18px]">manage_search</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Execution Trace:</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 execution steps · 1 handbook · 1 live index · Gemini 1.5 Pro · 1.2s</span>
+</div>
+<div class="flex items-center gap-1 text-outline font-label-sm text-label-sm">
+<span class="text-xs group-open:rotate-180 transition-transform">
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</span>
+</div>
+</summary>
+<div class="p-3.5 border-t border-outline-variant bg-[#FBFBFA] space-y-2.5 text-code-inline font-code-inline text-[12px]">
+<div class="flex items-start gap-2.5 text-on-surface-variant">
+<span class="text-primary-container font-semibold">[STEP 1]</span>
+<div class="flex-1">
+<code class="text-primary font-medium">search_onboarding_docs("CONTRIBUTING.md#local-setup", repo="astral-sh/ruff")</code>
+<div class="text-outline text-[11px] mt-0.5">Found 2 matched sections in 34ms (High semantic score: 0.941)</div>
+</div>
+</div>
+<div class="h-px bg-outline-variant/60"></div>
+<div class="flex items-start gap-2.5 text-on-surface-variant">
+<span class="text-primary-container font-semibold">[STEP 2]</span>
+<div class="flex-1">
+<code class="text-primary font-medium">get_directory_listing("crates/") &amp; inspect_cargo_toml("Cargo.toml")</code>
+<div class="text-outline text-[11px] mt-0.5">Verified workspace members: ruff, ruff_linter, ruff_python_ast, ruff_formatter</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+<!-- 3. Grounded Assistant Response Card -->
+<div class="flex items-start gap-3.5">
+<div class="w-9 h-9 rounded bg-surface-container-high border border-outline-variant flex-shrink-0 flex items-center justify-center text-primary-container font-semibold">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-lg p-5 shadow-[0_1px_3px_0_rgba(17,24,28,0.04)] space-y-4">
+<!-- Response Header -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Gemini Onboarding Agent</span>
+<span class="px-2 py-0.5 bg-[#D8F3DC] text-primary-container font-label-sm text-label-sm font-semibold rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Verified Ruff Docs</span>
+</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1 px-2 py-1 rounded text-outline hover:text-on-surface text-label-sm font-label-sm hover:bg-surface-container-low transition-colors" title="Copy response markdown">
+<span class="material-symbols-outlined text-[15px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+</div>
+<!-- Prerequisite Callout -->
+<div class="p-3 bg-surface-container-low border-l-4 border-primary-container rounded-r text-body-sm font-body-sm text-on-surface">
+<strong class="font-semibold text-primary-container">Prerequisites:</strong> Ensure you have <code class="font-code-inline text-[12px] bg-surface-container px-1.5 py-0.5 rounded text-primary">Rust 1.84+ (stable toolchain)</code> and <code class="font-code-inline text-[12px] bg-surface-container px-1.5 py-0.5 rounded text-primary">Cargo</code> installed via <code class="font-code-inline text-[12px] bg-surface-container px-1.5 py-0.5 rounded">rustup</code>.
+              </div>
+<!-- Step-by-Step Instructions -->
+<div class="space-y-3 font-body-md text-body-md text-on-surface">
+<p>Follow these four steps to fetch the repository and compile the main binary cleanly without incurring full-workspace build overhead:</p>
+<!-- Code Block 1: Clone & Navigate -->
+<div class="border border-outline-variant rounded bg-[#FBFBFA] overflow-hidden">
+<div class="h-8 bg-surface-container-low px-3 flex items-center justify-between border-b border-outline-variant text-[11px] font-label-sm text-outline">
+<span>1. Clone and enter repository</span>
+<span>bash</span>
+</div>
+<div class="p-3 font-code-block text-code-block text-[13px] text-[#11181C] overflow-x-auto space-y-1">
+<div><span class="text-outline"># Clone via HTTPS or SSH</span></div>
+<div><span class="text-primary font-medium">git clone</span> https://github.com/astral-sh/ruff.git</div>
+<div><span class="text-primary font-medium">cd</span> ruff</div>
+</div>
+</div>
+<!-- Code Block 2: Fast Target Compilation -->
+<div class="border border-outline-variant rounded bg-[#FBFBFA] overflow-hidden">
+<div class="h-8 bg-surface-container-low px-3 flex items-center justify-between border-b border-outline-variant text-[11px] font-label-sm text-outline">
+<span>2. Build the primary Ruff binary</span>
+<span>cargo</span>
+</div>
+<div class="p-3 font-code-block text-code-block text-[13px] text-[#11181C] overflow-x-auto space-y-1">
+<div><span class="text-outline"># Fast build targeting only the CLI crate</span></div>
+<div><span class="text-primary font-medium">cargo build</span> --package ruff</div>
+</div>
+</div>
+<!-- Explanatory note -->
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+<strong>Tip for new contributors:</strong> Ruff is structured as a large Cargo workspace with over 20 sub-crates. Specifying <code class="font-code-inline text-[12px] bg-surface-container px-1 py-0.5 rounded">--package ruff</code> avoids building benchmarks and internal documentation generators on your first cycle, saving approximately 40% compilation time.
+                </p>
+<!-- Code Block 3: Verification Test -->
+<div class="border border-outline-variant rounded bg-[#FBFBFA] overflow-hidden">
+<div class="h-8 bg-surface-container-low px-3 flex items-center justify-between border-b border-outline-variant text-[11px] font-label-sm text-outline">
+<span>3. Verify your build with linter unit tests</span>
+<span>cargo</span>
+</div>
+<div class="p-3 font-code-block text-code-block text-[13px] text-[#11181C] overflow-x-auto space-y-1">
+<div><span class="text-primary font-medium">cargo test</span> --package ruff_linter</div>
+</div>
+</div>
+</div>
+<!-- Source Citations (Chips) -->
+<div class="pt-3 border-t border-outline-variant space-y-2">
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-outline">Grounded Documentation Sources</span>
+<div class="flex flex-wrap gap-2">
+<a class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low hover:bg-surface-container border border-outline-variant rounded text-label-sm font-label-sm text-on-surface hover:text-primary transition-colors" href="#s1">
+<span class="font-semibold text-primary-container">[S1]</span>
+<span>CONTRIBUTING.md (Section 3.1: Building from Source)</span>
+<span class="material-symbols-outlined text-[13px] text-outline">open_in_new</span>
+</a>
+<a class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low hover:bg-surface-container border border-outline-variant rounded text-label-sm font-label-sm text-on-surface hover:text-primary transition-colors" href="#s2">
+<span class="font-semibold text-primary-container">[S2]</span>
+<span>README.md (Development Quickstart)</span>
+<span class="material-symbols-outlined text-[13px] text-outline">open_in_new</span>
+</a>
+<a class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low hover:bg-surface-container border border-outline-variant rounded text-label-sm font-label-sm text-on-surface hover:text-primary transition-colors" href="#s3">
+<span class="font-semibold text-primary-container">[S3]</span>
+<span>Cargo.toml (Workspace Members)</span>
+<span class="material-symbols-outlined text-[13px] text-outline">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Human-in-the-Loop Proposal Card (Distinct Amber Proposal Style) -->
+<div class="ml-12 border-2 border-[#FDE68A] bg-[#FFFBEB] rounded-lg p-4 shadow-[0_2px_4px_0_rgba(217,119,6,0.06)] space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">assignment_turned_in</span>
+<span class="font-label-sm text-label-sm font-bold uppercase tracking-wider text-secondary">
+                  Action Required · Human-in-the-Loop Proposal
+                </span>
+</div>
+<span class="text-[11px] font-label-sm text-secondary bg-[#FEF3C7] px-2 py-0.5 rounded border border-[#FDE68A]">
+                Confidence: 0.98
+              </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-snug">
+<strong>Proposed state update:</strong> Mark task <strong>#3 (Initial Build &amp; Toolchain Validation)</strong> as completed in your Onboarding Path based on successful command verification above. This will unlock Step 05 (Crate Directory Inspection).
+            </p>
+<div class="flex items-center gap-2.5 pt-1">
+<!-- Proposal Button using Amber / Primary Style -->
+<button class="px-3.5 py-1.5 bg-[#D97706] hover:bg-[#B45309] text-white rounded font-label-sm text-label-sm font-semibold transition-colors flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[15px]">check</span>
+<span>Apply Change &amp; Advance Path</span>
+</button>
+<button class="px-3.5 py-1.5 bg-white hover:bg-[#FAF9F5] border border-[#E4E4E7] text-on-surface-variant font-label-sm text-label-sm font-medium rounded transition-colors">
+                Discard Proposal
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- ==================================== -->
+<!-- PINNED BOTTOM CHAT INPUT DOCK        -->
+<!-- ==================================== -->
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#FAF9F5] via-[#FAF9F5] to-transparent pt-6 pb-4 px-6 z-20">
+<div class="max-w-4xl mx-auto space-y-2">
+<!-- Suggestion prompt pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 custom-scroll text-[12px] font-label-sm">
+<span class="text-outline text-label-sm font-label-sm whitespace-nowrap pl-1">Suggested queries:</span>
+<button class="px-2.5 py-1 bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-full text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors shadow-sm">
+              Explain ruff_python_ast crate
+            </button>
+<button class="px-2.5 py-1 bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-full text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors shadow-sm">
+              What is the PR test suite command?
+            </button>
+<button class="px-2.5 py-1 bg-surface-container-lowest border border-outline-variant hover:border-outline rounded-full text-on-surface-variant hover:text-on-surface whitespace-nowrap transition-colors shadow-sm">
+              Show my current milestone status
+            </button>
+</div>
+<!-- Deep Editorial Input Container -->
+<div class="bg-surface-container-lowest border border-outline-variant focus-within:border-primary focus-within:ring-2 focus-within:ring-[#D8F3DC] rounded-lg shadow-sm transition-all duration-150 p-2.5">
+<div class="flex items-start gap-2">
+<textarea class="w-full bg-transparent resize-none border-0 p-1 font-body-md text-body-md text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none" placeholder="Ask a question about setup, code ownership, or what to work on next..." rows="2"></textarea>
+</div>
+<!-- Bottom bar inside input: Tools, Model Badge & Send -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/40 mt-1 px-1">
+<div class="flex items-center gap-2">
+<!-- Grounded Model Tag -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 bg-[#D8F3DC] rounded text-primary-container font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Gemini Grounded Mode</span>
+</div>
+<div class="h-3 w-px bg-outline-variant"></div>
+<button class="p-1 text-outline hover:text-on-surface rounded hover:bg-surface-container-low transition-colors" title="Attach file or symbol reference">
+<span class="material-symbols-outlined text-[18px]">attachment</span>
+</button>
+<button class="p-1 text-outline hover:text-on-surface rounded hover:bg-surface-container-low transition-colors" title="Select crate context">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="hidden sm:inline font-label-sm text-label-sm text-outline">Press Return to send</span>
+<button class="w-8 h-8 rounded bg-[#1B4332] hover:bg-[#2D6A4F] text-white flex items-center justify-center transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center gap-4 text-[11px] font-label-sm text-outline pt-0.5">
+<span>Astral repository docs indexed 14 mins ago</span>
+<span>·</span>
+<span>Deterministic RAG grounding enabled</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

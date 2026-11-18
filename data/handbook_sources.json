@@ -1,0 +1,13 @@
+[
+  "README.md",
+  "CONTRIBUTING.md",
+  ".github/CODEOWNERS",
+  ".github/PULL_REQUEST_TEMPLATE.md",
+  "docs/installation.md",
+  "docs/configuration.md",
+  "docs/faq.md",
+  "docs/tutorial.md",
+  "docs/linter.md",
+  "docs/formatter.md",
+  "docs/integrations.md"
+]

@@ -1,0 +1,16 @@
+mcp==2.3.0
+google-genai==2.11.0
+groq==1.7.0
+httpx==0.28.1
+pydantic==2.14.2
+pydantic-settings==2.14.2
+python-dotenv==1.2.2
+pathspec==1.1.1
+chromadb==1.5.9
+sentence-transformers==6.2.0
+streamlit==1.59.2
+pytest==9.2.0
+pytest-asyncio==1.4.1
+respx==0.23.1
+torch==2.15.0
+
