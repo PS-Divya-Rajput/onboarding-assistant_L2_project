@@ -142,6 +142,36 @@ def cmd_server() -> None:
     run_server()
 
 
+def cmd_logs(lines: int = 50, level: Optional[str] = None) -> None:
+    """Stream recent application logs from disk."""
+    from logging_config import read_recent_logs
+    log_lines = read_recent_logs(max_lines=lines, level_filter=level)
+    print(f"\n=== Onboarding Assistant Logs (Last {lines} lines, filter={level or 'ALL'}) ===")
+    if not log_lines:
+        print("No log entries found.")
+    else:
+        for line in log_lines:
+            print(line)
+    print()
+
+
+def cmd_audit(limit: int = 25) -> None:
+    """Display recent MCP security and privacy audit entries."""
+    from logging_config import get_audit_records
+    records = get_audit_records(limit=limit)
+    print(f"\n=== MCP Security & Audit Trail (Latest {limit} entries) ===")
+    if not records:
+        print("No audit records found in SQLite.")
+    else:
+        print(f"{'Timestamp (UTC)':<20} | {'Tool Name':<28} | {'Status':<10} | {'Bytes':<8} | {'Redactions':<10} | {'Arguments SHA-256'}")
+        print("-" * 105)
+        for r in records:
+            short_ts = r['ts'][:19].replace('T', ' ')
+            short_sha = r['args_sha256'][:16] + "..."
+            print(f"{short_ts:<20} | {r['tool']:<28} | {r['status']:<10} | {r['bytes_returned']:<8} | {r['redactions']:<10} | {short_sha}")
+    print()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="onboard",
@@ -172,6 +202,15 @@ def main() -> None:
     # Server
     subparsers.add_parser("server", help="Run MCP server over stdio (for Cursor, VS Code, Claude Code)")
 
+    # Logs
+    p_logs = subparsers.add_parser("logs", help="Stream recent application activity logs")
+    p_logs.add_argument("--lines", type=int, default=50, help="Number of lines to show")
+    p_logs.add_argument("--level", default=None, help="Filter level: INFO, WARNING, ERROR")
+
+    # Audit
+    p_audit = subparsers.add_parser("audit", help="Display MCP tool execution audit records")
+    p_audit.add_argument("--limit", type=int, default=25, help="Number of records to show")
+
     args = parser.parse_args()
 
     if args.subcommand == "ask":
@@ -186,6 +225,10 @@ def main() -> None:
         cmd_cohort()
     elif args.subcommand == "server":
         cmd_server()
+    elif args.subcommand == "logs":
+        cmd_logs(lines=args.lines, level=args.level)
+    elif args.subcommand == "audit":
+        cmd_audit(limit=args.limit)
     else:
         parser.print_help()
 

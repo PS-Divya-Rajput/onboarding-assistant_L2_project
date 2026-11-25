@@ -18,9 +18,9 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Literal, Optional
 
 from config import config
+from logging_config import get_logger
 
-logger = logging.getLogger("onboarding_assistant.llm")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+logger = get_logger("onboarding_assistant.llm")
 
 
 class LLMUnavailable(Exception):

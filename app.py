@@ -23,6 +23,9 @@ importlib.reload(ui.theme)
 importlib.reload(ui.components)
 importlib.reload(ui.views)
 
+from logging_config import setup_logging
+setup_logging()
+
 from ui.components import render_header_html, render_segmented_progress_html
 from ui.theme import get_css
 from ui.views import (

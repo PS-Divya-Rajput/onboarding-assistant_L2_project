@@ -3,7 +3,7 @@
 Asserts:
 - No unhandled exceptions during boot and rerun.
 - Exactly 3 sample users in the persona selector.
-- Exactly 3 navigation tabs present (Ask, Path, Question log).
+- Exactly 4 navigation tabs present (Ask, Path, Lead oversight, Question log).
 - Navigation switching between tabs without runtime errors.
 """
 

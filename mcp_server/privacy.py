@@ -18,7 +18,10 @@ import re
 from pathlib import PurePosixPath
 from typing import Any, Dict, List, Tuple
 from config import config
+from logging_config import get_logger
 from mcp_server.db import record_audit
+
+logger = get_logger("onboarding_assistant.privacy")
 
 # Explicit allowlist for documentation files that may be fetched
 DOC_FILENAME_PATTERNS = [
@@ -65,6 +68,13 @@ def is_path_denied(path: str, denylist: List[str] | None = None) -> bool:
             return True
         # Wildcard / glob match
         if fnmatch.fnmatch(clean_path, f"*{blocked_clean}*"):
+            logger.warning(f"Path denylist blocked access to '{clean_path}' (matched rule '{blocked_clean}')")
+            return True
+        if clean_path == blocked_clean or clean_path.startswith(blocked_clean + "/"):
+            logger.warning(f"Path denylist blocked access to '{clean_path}' (matched rule '{blocked_clean}')")
+            return True
+        if any(part == blocked_clean for part in path_parts):
+            logger.warning(f"Path denylist blocked access to '{clean_path}' (matched segment '{blocked_clean}')")
             return True
     return False
 
@@ -176,4 +186,5 @@ def audit_tool_call(
         bytes_returned=payload_bytes,
         redactions=redaction_count,
     )
+    logger.info(f"Audit logged: tool='{tool_name}' status='{status}' bytes={payload_bytes} redactions={redaction_count}")
 

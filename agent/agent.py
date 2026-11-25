@@ -30,8 +30,9 @@ from agent.events import (
 from agent.llm_provider import LLMMessage, LLMProvider, LLMResponse, LLMUnavailable
 from agent.mcp_bridge import MCPBridge, get_mcp_bridge
 from agent.system_prompt import get_system_prompt
+from logging_config import get_logger
 
-logger = logging.getLogger("onboarding_assistant.agent")
+logger = get_logger("onboarding_assistant.agent")
 
 LIVE_TOOLS = {
     "get_repo_overview",
@@ -76,9 +77,11 @@ class Agent:
 
         proposal = self.proposals[proposal_id]
         applied_args = {**proposal.args, "dry_run": False}
+        logger.info(f"Applying proposal '{proposal_id}' (tool={proposal.tool_name}) with dry_run=False")
         result = self.bridge.call_tool(proposal.tool_name, applied_args)
         # Remove from active proposals
         del self.proposals[proposal_id]
+        logger.info(f"Proposal '{proposal_id}' applied successfully.")
         return result
 
     def _truncate_history(self, history: List[Dict[str, str]], max_turns: int = 6) -> List[LLMMessage]:
@@ -117,6 +120,8 @@ class Agent:
             except Exception:
                 effective_role = "Developer"
 
+        logger.info(f"Agent received query for user '{user_id}' ({effective_role}): {question}")
+
         # 1. Prepare system prompt and tools
         system_instruction = get_system_prompt(user_role=effective_role)
         try:
@@ -153,6 +158,7 @@ class Agent:
             # Case A: Model provided a final text answer without tool calls
             if not llm_resp.tool_calls:
                 elapsed = round(time.time() - start_time, 2)
+                logger.info(f"Final answer synthesized via {last_provider_used} in {elapsed}s across {step_count} step(s).")
                 yield FinalAnswerEvent(
                     markdown=llm_resp.content or "No response generated.",
                     sources=list(collected_sources.values()),
@@ -184,6 +190,8 @@ class Agent:
                 # WRITE TOOL SAFETY: Force dry_run=True regardless of what model supplied
                 if tool_name in WRITE_TOOLS:
                     tool_args["dry_run"] = True
+
+                logger.info(f"Step {step_count}: dispatching tool '{tool_name}' ({tool_kind}) with args={tool_args}")
 
                 # Yield ToolCallEvent
                 yield ToolCallEvent(name=tool_name, args=tool_args, kind=tool_kind)
@@ -252,6 +260,7 @@ class Agent:
                     summary=summary,
                     duration_ms=duration_ms,
                 )
+                logger.info(f"Tool '{tool_name}' finished in {duration_ms}ms (ok={is_ok}): {summary}")
 
                 # Check if this was a write tool producing a Proposal
                 if tool_name in WRITE_TOOLS and is_ok:

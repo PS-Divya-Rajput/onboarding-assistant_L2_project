@@ -18,8 +18,9 @@ from typing import Any, Dict, List, Optional
 from mcp import StdioServerParameters
 from mcp.client.session import ClientSession
 from mcp.client.stdio import stdio_client
+from logging_config import get_logger
 
-logger = logging.getLogger("onboarding_assistant.bridge")
+logger = get_logger("onboarding_assistant.bridge")
 
 HIDDEN_PARAMETERS = {"dry_run", "user_id", "repo"}
 
@@ -67,6 +68,7 @@ class MCPBridge:
             args=["-m", self._server_script],
             env={**os.environ, "PYTHONUNBUFFERED": "1", "PYTHONIOENCODING": "utf-8"},
         )
+        logger.info(f"Starting MCP server subprocess '{self._server_script}' over stdio...")
 
         try:
             async with stdio_client(server_params) as (read_stream, write_stream):
@@ -74,6 +76,7 @@ class MCPBridge:
                     await session.initialize()
                     self._session = session
                     self._session_ready.set()
+                    logger.info("MCP ClientSession initialized successfully.")
 
                     # Keep running until shutdown signal is received
                     while not self._shutdown_event.is_set():
@@ -90,6 +93,7 @@ class MCPBridge:
         if not self._loop or not self._session:
             raise RuntimeError("MCP Bridge session is not ready.")
 
+        logger.info("Listing MCP tools from server...")
         future = asyncio.run_coroutine_threadsafe(self._session.list_tools(), self._loop)
         mcp_tools_res = future.result(timeout=15.0)
 
@@ -119,6 +123,7 @@ class MCPBridge:
             })
 
         self._cached_tools = cleaned_tools
+        logger.info(f"Successfully loaded and cached {len(cleaned_tools)} MCP tools.")
         return self._cached_tools
 
     def call_tool(self, name: str, args: Dict[str, Any]) -> Dict[str, Any]:
@@ -126,6 +131,7 @@ class MCPBridge:
         if not self._loop or not self._session:
             raise RuntimeError("MCP Bridge session is not active.")
 
+        logger.info(f"Bridge executing MCP tool: '{name}'")
         # Timeout increased to 120s to accommodate model loading on cold start
         future = asyncio.run_coroutine_threadsafe(
             self._session.call_tool(name=name, arguments=args),

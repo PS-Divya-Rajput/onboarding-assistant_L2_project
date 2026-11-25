@@ -16,6 +16,10 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from logging_config import get_logger, setup_logging
+setup_logging()
+logger = get_logger("onboarding_assistant.mcp_server")
+
 from mcp.server.mcpserver import MCPServer
 from mcp_server.privacy import is_path_denied, redact_string
 from mcp_server.schemas import (

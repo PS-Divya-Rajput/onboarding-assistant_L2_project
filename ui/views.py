@@ -575,3 +575,166 @@ def render_lead_oversight_view(agent: Agent, current_user_id: str) -> None:
             """,
             unsafe_allow_html=True,
         )
+
+
+def render_system_logs_view() -> None:
+    """Render the centralized System Logs & Security Audit Trail view."""
+    from logging_config import LOG_FILE_PATH, get_audit_records, read_recent_logs
+
+    st.markdown(
+        """
+        <div style="margin-bottom:1.25rem;">
+            <div style="font-family:var(--font-serif); font-size:24px; font-weight:600; color:var(--text-ink); margin-bottom:4px;">System Logs &amp; Audit Trail</div>
+            <div style="font-size:14px; color:var(--text-secondary);">Real-time runtime logs, ReAct execution traces, LLM failover events, and cryptographic tool audit records.</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    tab_app_logs, tab_audit_logs = st.tabs(["Application Activity Logs", "MCP Security Audit Trail"])
+
+    with tab_app_logs:
+        col_ctrl1, col_ctrl2, col_ctrl3, col_ctrl4 = st.columns([2, 2, 1, 1], gap="small")
+        with col_ctrl1:
+            level_sel = st.selectbox("Log Level Filter", ["ALL", "INFO", "WARNING", "ERROR"], index=0)
+        with col_ctrl2:
+            lines_sel = st.selectbox("Lines to Display", [50, 100, 200, 500], index=1)
+        with col_ctrl3:
+            st.markdown('<div style="height:28px;"></div>', unsafe_allow_html=True)
+            if st.button("Refresh", key="btn_refresh_logs"):
+                st.rerun()
+        with col_ctrl4:
+            st.markdown('<div style="height:28px;"></div>', unsafe_allow_html=True)
+            raw_text = ""
+            if LOG_FILE_PATH.exists():
+                try:
+                    with open(LOG_FILE_PATH, "r", encoding="utf-8", errors="replace") as f:
+                        raw_text = f.read()
+                except Exception:
+                    raw_text = "Failed to read log file."
+            st.download_button(
+                label="Download",
+                data=raw_text,
+                file_name="onboarding.log",
+                mime="text/plain",
+                key="btn_download_logs",
+            )
+
+        log_lines = read_recent_logs(max_lines=lines_sel, level_filter=level_sel)
+        if log_lines:
+            # Colorize lines
+            formatted_lines = []
+            for line in log_lines:
+                escaped = html.escape(line)
+                if "[ERROR]" in line:
+                    formatted_lines.append(f'<span style="color:var(--proposal-primary); font-weight:600;">{escaped}</span>')
+                elif "[WARNING]" in line:
+                    formatted_lines.append(f'<span style="color:#d97706; font-weight:600;">{escaped}</span>')
+                elif "[INFO]" in line:
+                    formatted_lines.append(f'<span style="color:var(--text-ink);">{escaped}</span>')
+                else:
+                    formatted_lines.append(f'<span style="color:var(--text-muted);">{escaped}</span>')
+
+            content_html = "<br/>".join(formatted_lines)
+            st.markdown(
+                f"""
+                <div style="background:var(--bg-card); border:1px solid var(--border-hairline); border-radius:var(--radius-lg); padding:16px; font-family:var(--font-mono); font-size:12px; line-height:1.6; max-height:550px; overflow-y:auto; box-shadow:var(--shadow-subtle);">
+                    {content_html}
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        else:
+            st.markdown(
+                """
+                <div style="background:var(--bg-surface); border:1px solid var(--border-hairline); border-radius:var(--radius-lg); padding:24px; text-align:center; color:var(--text-muted); font-size:13px;">
+                    No log records match the selected filter. Perform an action in the Ask or Lead view to generate runtime logs.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    with tab_audit_logs:
+        st.markdown(
+            '<div style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">'
+            'Immutable ledger recording every MCP tool execution. Adheres to zero-payload security policy: '
+            'stores deterministic SHA-256 hash of arguments without persisting sensitive user data or API keys.'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+
+        audit_records = get_audit_records(limit=100)
+        if audit_records:
+            # Summary chips
+            total_calls = len(audit_records)
+            total_redactions = sum(r["redactions"] for r in audit_records)
+            errors_count = sum(1 for r in audit_records if r["status"] in ("error", "blocked"))
+
+            st.markdown(
+                f"""
+                <div style="display:flex; gap:16px; margin-bottom:14px;">
+                    <div style="background:var(--bg-surface); border:1px solid var(--border-hairline); border-radius:var(--radius-md); padding:8px 14px;">
+                        <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); text-transform:uppercase;">Audited Calls</span>
+                        <div style="font-family:var(--font-mono); font-size:16px; font-weight:600; color:var(--text-ink);">{total_calls}</div>
+                    </div>
+                    <div style="background:var(--bg-surface); border:1px solid var(--border-hairline); border-radius:var(--radius-md); padding:8px 14px;">
+                        <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); text-transform:uppercase;">Tokens Redacted</span>
+                        <div style="font-family:var(--font-mono); font-size:16px; font-weight:600; color:var(--accent-primary);">{total_redactions}</div>
+                    </div>
+                    <div style="background:var(--bg-surface); border:1px solid var(--border-hairline); border-radius:var(--radius-md); padding:8px 14px;">
+                        <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); text-transform:uppercase;">Blocked / Errors</span>
+                        <div style="font-family:var(--font-mono); font-size:16px; font-weight:600; color:{'var(--proposal-primary)' if errors_count else 'var(--text-muted)'};">{errors_count}</div>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            rows_html = []
+            for r in audit_records:
+                status_color = "var(--accent-primary)" if r["status"] == "success" else ("var(--proposal-primary)" if r["status"] in ("error", "blocked") else "var(--text-muted)")
+                short_sha = r["args_sha256"][:12] + "..."
+                rows_html.append(
+                    f"""
+                    <tr style="border-bottom:1px solid var(--border-hairline); font-size:12px;">
+                        <td style="padding:8px 10px; font-family:var(--font-mono); color:var(--text-muted);">{html.escape(r['ts'][:19].replace('T', ' '))}</td>
+                        <td style="padding:8px 10px; font-family:var(--font-mono); font-weight:600; color:var(--text-ink);">{html.escape(r['tool'])}</td>
+                        <td style="padding:8px 10px; font-family:var(--font-mono); font-size:11px; font-weight:600; color:{status_color}; text-transform:uppercase;">{html.escape(r['status'])}</td>
+                        <td style="padding:8px 10px; font-family:var(--font-mono);">{r['bytes_returned']:,} B</td>
+                        <td style="padding:8px 10px; font-family:var(--font-mono); color:{'var(--accent-primary)' if r['redactions'] else 'var(--text-muted)'};">{r['redactions']}</td>
+                        <td style="padding:8px 10px; font-family:var(--font-mono); color:var(--text-muted); font-size:11px;" title="{html.escape(r['args_sha256'])}">{short_sha}</td>
+                    </tr>
+                    """
+                )
+
+            st.markdown(
+                f"""
+                <div style="background:var(--bg-surface); border:1px solid var(--border-hairline); border-radius:var(--radius-lg); padding:16px; box-shadow:var(--shadow-subtle);">
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom:2px solid var(--border-hairline); font-size:11px; font-family:var(--font-mono); color:var(--text-muted); text-transform:uppercase;">
+                                <th style="padding:6px 10px;">Timestamp (UTC)</th>
+                                <th style="padding:6px 10px;">Tool Name</th>
+                                <th style="padding:6px 10px;">Status</th>
+                                <th style="padding:6px 10px;">Bytes</th>
+                                <th style="padding:6px 10px;">Redactions</th>
+                                <th style="padding:6px 10px;">Arguments SHA-256</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {''.join(rows_html)}
+                        </tbody>
+                    </table>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        else:
+            st.markdown(
+                """
+                <div style="background:var(--bg-surface); border:1px solid var(--border-hairline); border-radius:var(--radius-lg); padding:24px; text-align:center; color:var(--text-muted); font-size:13px;">
+                    Zero audit records logged yet. Tools invoked by the agent will appear here automatically.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
